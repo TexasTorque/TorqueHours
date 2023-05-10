@@ -8,11 +8,23 @@ body {
   font-weight: bold;
 }
 
+h1,
+th,
+td {
+  color: white !important;
+}
+
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 2em;
+}
+
+.header-border-box {
+  display: flex;
+  padding: 15px;
+  border: 5px solid white;
 }
 
 .header-name {
@@ -79,4 +91,21 @@ body {
 
 .dropdown-search {
   margin: 5px;
+}
+
+.hour-report-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 2em;
+}
+
+.hour-cell {
+  text-align: center;
+}
+
+.hours-table {
+  margin-left: 5%;
+  margin-top: 2em;
 }

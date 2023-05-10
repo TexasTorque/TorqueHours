@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Home from "./pages/Home.jsx"
+import HoursReport from "./pages/HoursReport.jsx"
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -9,6 +10,7 @@ root.render(
   <Router>
       <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/hours" element={<HoursReport />} />
       </Routes>
   </Router>
 );

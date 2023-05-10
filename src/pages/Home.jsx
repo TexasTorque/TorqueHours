@@ -1,7 +1,5 @@
 import { Button, Dropdown, Form } from "react-bootstrap";
 import { useState } from "react";
-import torqueLogo from "../imgs/torqueLogo.png";
-import "../index.css";
 import { useEffect } from "react";
 import {
   getAllNames,
@@ -12,6 +10,9 @@ import {
   getAllUsers,
 } from "../firebase";
 import { onSnapshot, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import "../index.css"
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -25,6 +26,8 @@ export default function Home() {
   let [elapsedTime, setElapsedTime] = useState(0);
   let [rank, setRank] = useState(0);
   let [totalUsers, setTotalUsers] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (name.length > 0)
@@ -115,10 +118,7 @@ export default function Home() {
 
   return (
     <div style={{ marginTop: "2em" }}>
-      <div className="header">
-        <img src={torqueLogo} style={{ height: "3.5em", width: "3.5em" }}></img>
-        <h4 className="header-name">Torque Hours</h4>
-      </div>
+      <Header/>
 
       <div className="name-selection">
         <h1 className="name-prompt">Select Your Name:</h1>
@@ -186,6 +186,17 @@ export default function Home() {
             {buttonMessage}
           </Button>
         </div>
+      </div>
+
+      <div className="hour-report-button">
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/hours");
+          }}
+        >
+          Leaderboard
+        </Button>
       </div>
     </div>
   );
