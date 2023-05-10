@@ -2,8 +2,9 @@ import { Button, Dropdown, Form } from "react-bootstrap";
 import { useState } from "react";
 import torqueLogo from "../imgs/torqueLogo.png";
 import "../index.css";
-import { useEffect, useRef } from "react";
-import { getAllNames, getUserObject, addTimestamp } from "../firebase";
+import { useEffect } from "react";
+import { getAllNames, getUserObject, addTimestamp, db } from "../firebase";
+import { onSnapshot, doc } from "firebase/firestore";
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -12,7 +13,17 @@ export default function Home() {
   const [hours, setHours] = useState(0);
   const [buttonMessage, setButtonMessage] = useState("Sign In");
 
+  let [numMeetings, setNumMeetings] = useState(0);
   let [signInNumber, setSignInNumber] = useState(0);
+
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => {
+    if (name.length > 0)
+      onSnapshot(doc(db, "hours", name), () => {
+        setUpdate(update + 1);
+      });
+  }, [name, update]);
 
   useEffect(() => {
     const getAllNamesFromFB = async () => {
@@ -32,6 +43,10 @@ export default function Home() {
         Object.keys(userObject).length % 2 !== 0 ? "Sign In" : "Sign Out"
       );
 
+      numMeetings = (Object.keys(userObject).length - 1) / 2;
+
+      setNumMeetings(numMeetings);
+
       signInNumber = Object.keys(userObject).length - 1;
 
       signInNumber = parseInt(signInNumber / 2) + 1;
@@ -40,15 +55,15 @@ export default function Home() {
     };
 
     if (name.length > 0) callFB();
-  }, [name]);
+  }, [name, update]);
 
   const signInOut = async (e) => {
-    console.log(signInNumber);
     e.preventDefault();
     addTimestamp(
       (buttonMessage === "Sign In" ? "sign-in-" : "sign-out-") + signInNumber,
       new Date().toISOString(),
-      name
+      name,
+      signInNumber
     );
   };
 
@@ -94,14 +109,25 @@ export default function Home() {
 
         <div className="statistics">
           <div className="statistic">
+            <h1 className="statistic-name">Your Recorded Hours This Season:</h1>
+            <h1 className="statistic-value">{hours}</h1>
+          </div>
+          <div className="statistic">
+            <h1 className="statistic-name">Number of Meetings Attended:</h1>
+            <h1 className="statistic-value">{numMeetings}</h1>
+          </div>
+          <div className="statistic">
             <h1 className="statistic-name">Your Hours Rank (out of 66):</h1>
             <h1 className="statistic-value">21</h1>
           </div>
-          <div className="statistic">
-            <h1 className="statistic-name">Your Hours This Season:</h1>
-            <h1 className="statistic-value">{hours}</h1>
-          </div>
-          <div className="statistic" style={{ marginTop: "1em" }}>
+
+          <div
+            className="statistic"
+            style={{
+              marginTop: "1em",
+              display: `${buttonMessage.includes("In") ? "none" : ""}`,
+            }}
+          >
             <h1 className="statistic-name">Your Current Signed in Time:</h1>
             <h1 className="statistic-value">55 min</h1>
           </div>
