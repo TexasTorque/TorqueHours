@@ -1,3 +1,83 @@
 body {
-  background-color: black;
+  background-color: black !important;
+}
+
+@font-face {
+  font-family: "Market_Deco";
+  src: local("Market_Deco"), url("./fonts/Market_Deco.ttf") format("truetype");
+  font-weight: bold;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.header-name {
+  font-family: "Market_Deco";
+  color: white;
+  font-size: 2em;
+  margin-top: 0.2em;
+}
+
+.name-prompt {
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  color: white;
+  margin-right: 0.5em;
+}
+
+.statistic-name {
+  font-size: 1em;
+}
+
+.statistic-value {
+  margin-left: 0.5em;
+  font-size: 1em;
+}
+
+.statistics {
+  margin-top: 2em;
+  display: grid;
+  color: white;
+  justify-content: center;
+}
+
+.statistic {
+  display: flex;
+  justify-content: center;
+}
+
+.greeting {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+  width: 100%;
+  color: white;
+  font-size: 2em;
+}
+
+.name-selection {
+  display: flex;
+  justify-content: center;
+  margin-top: 4em;
+}
+
+.sign-in-out-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5em;
+}
+
+.sign-in-out-button {
+  height: 8em;
+  width: 12em;
+  font-size: 20px;
+}
+
+.dropdown-search {
+  margin: 5px;
 }
