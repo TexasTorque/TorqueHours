@@ -12,7 +12,7 @@ import {
 import { onSnapshot, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import "../index.css"
+import "../index.css";
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -118,7 +118,7 @@ export default function Home() {
 
   return (
     <div style={{ marginTop: "2em" }}>
-      <Header/>
+      <Header />
 
       <div className="name-selection">
         <h1 className="name-prompt">Select Your Name:</h1>
@@ -192,10 +192,19 @@ export default function Home() {
         <Button
           onClick={(e) => {
             e.preventDefault();
-            navigate("/hours");
+            navigate("/leaderboard");
           }}
         >
           Leaderboard
+        </Button>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/add");
+          }}
+          style={{ marginLeft: "1em" }}
+        >
+          Add User
         </Button>
       </div>
     </div>

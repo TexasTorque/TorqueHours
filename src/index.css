@@ -80,11 +80,11 @@ td {
 .sign-in-out-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 5em;
+  margin-top: 1em;
 }
 
 .sign-in-out-button {
-  height: 8em;
+  height: 7em;
   width: 12em;
   font-size: 20px;
 }
@@ -98,7 +98,7 @@ td {
   justify-content: center;
   width: 100%;
   position: absolute;
-  bottom: 2em;
+  bottom: 1em;
 }
 
 .hour-cell {
@@ -108,4 +108,22 @@ td {
 .hours-table {
   margin-left: 5%;
   margin-top: 2em;
+}
+
+.add-user {
+  display: flex;
+  justify-content: center;
+  margin-top: 4em;
+}
+
+.add-user-input-field {
+  width: 10em;
+  margin-left: 3em;
+}
+
+.add-user-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+  width: 100%;
 }

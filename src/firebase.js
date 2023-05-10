@@ -68,6 +68,7 @@ export const getRunningHours = async (name, signInNumber) => {
     ) / 10;
 
   if (timeSignedIn < 12) totalRunningHours += timeSignedIn;
+  else totalRunningHours += 3;
 
   totalRunningHours = Math.round(totalRunningHours);
 
@@ -84,4 +85,13 @@ export const getLatestSignInTime = async (name, signInNumber) => {
   }
 
   return latestDate;
+};
+
+export const createUser = async (name) => {
+  const userRef = doc(db, "hours", name);
+  const userJSON = {
+    name: name,
+    hours: 0,
+  };
+  setDoc(userRef, userJSON);
 };
