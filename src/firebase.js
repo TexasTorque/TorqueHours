@@ -26,6 +26,12 @@ export const getAllNames = async () => {
   return hoursSnap.docs.map((doc) => doc.id);
 };
 
+export const getAllUsers = async () => {
+  const hoursRef = collection(db, "hours");
+  const hoursSnap = await getDocs(hoursRef);
+  return hoursSnap.docs.map((doc) => doc.data());
+};
+
 export const getUserObject = async (name) => {
   const userRef = collection(db, "hours");
   const usersSnap = await getDocs(userRef);
@@ -48,27 +54,34 @@ export const addTimestamp = async (key, value, name, signInNumber) => {
     userJSON["hours"] = runningHours;
   }
 
-    setDoc(userRef, userJSON, { merge: true });
+  setDoc(userRef, userJSON, { merge: true });
 };
 
 export const getRunningHours = async (name, signInNumber) => {
+  let totalRunningHours = (await getUserObject(name)).hours;
+
+  const latestSignInTime = await getLatestSignInTime(name, signInNumber);
+
+  const timeSignedIn =
+    Math.round(
+      ((new Date().getTime() - latestSignInTime.getTime()) / 3.6e6) * 10
+    ) / 10;
+
+  if (timeSignedIn < 12) totalRunningHours += timeSignedIn;
+
+  totalRunningHours = Math.round(totalRunningHours);
+
+  return totalRunningHours;
+};
+
+export const getLatestSignInTime = async (name, signInNumber) => {
   const userObject = await getUserObject(name);
-  let runningHours = userObject.hours;
   let latestDate;
-  console.log("SIN "+signInNumber);
 
   for (const property in userObject) {
     if (property === "sign-in-" + signInNumber)
       latestDate = new Date(userObject[property]);
   }
 
-  console.log(latestDate);
-
-  runningHours +=
-    Math.round(((new Date().getTime() - latestDate.getTime()) / 3.6e6) * 10) /
-    10;
-
-  runningHours = Math.round(runningHours);
-
-  return runningHours;
+  return latestDate;
 };

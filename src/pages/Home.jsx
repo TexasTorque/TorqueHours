@@ -3,7 +3,14 @@ import { useState } from "react";
 import torqueLogo from "../imgs/torqueLogo.png";
 import "../index.css";
 import { useEffect } from "react";
-import { getAllNames, getUserObject, addTimestamp, db } from "../firebase";
+import {
+  getAllNames,
+  getUserObject,
+  addTimestamp,
+  db,
+  getLatestSignInTime,
+  getAllUsers,
+} from "../firebase";
 import { onSnapshot, doc } from "firebase/firestore";
 
 export default function Home() {
@@ -15,15 +22,16 @@ export default function Home() {
 
   let [numMeetings, setNumMeetings] = useState(0);
   let [signInNumber, setSignInNumber] = useState(0);
-
-  const [update, setUpdate] = useState(false);
+  let [elapsedTime, setElapsedTime] = useState(0);
+  let [rank, setRank] = useState(0);
+  let [totalUsers, setTotalUsers] = useState(0);
 
   useEffect(() => {
     if (name.length > 0)
       onSnapshot(doc(db, "hours", name), () => {
-        setUpdate(update + 1);
+        updateFields();
       });
-  }, [name, update]);
+  }, [name]);
 
   useEffect(() => {
     const getAllNamesFromFB = async () => {
@@ -33,29 +41,67 @@ export default function Home() {
     getAllNamesFromFB();
   }, []);
 
+  const updateFields = async () => {
+    const userObject = await getUserObject(name);
+
+    setHours(userObject.hours);
+
+    setButtonMessage(
+      Object.keys(userObject).length % 2 === 0 ? "Sign In" : "Sign Out"
+    );
+
+    numMeetings = (Object.keys(userObject).length - 2) / 2;
+
+    setNumMeetings(numMeetings);
+
+    signInNumber = Object.keys(userObject).length - 2;
+
+    signInNumber = parseInt(signInNumber / 2) + 1;
+
+    setSignInNumber(signInNumber);
+  };
+
   useEffect(() => {
-    const callFB = async () => {
-      const userObject = await getUserObject(name);
+    const getLatestSignInTimeFromFB = async () => {
+      const latestSignInTime = await getLatestSignInTime(name, signInNumber);
 
-      setHours(userObject.hours);
+      const durationInMs =
+        new Date().getTime() - new Date(latestSignInTime).getTime();
+      elapsedTime = new Date(durationInMs).toISOString().substr(11, 8);
 
-      setButtonMessage(
-        Object.keys(userObject).length % 2 !== 0 ? "Sign In" : "Sign Out"
-      );
+      const hours = Math.floor(durationInMs / (1000 * 60 * 60));
+      const minutes = Math.floor((durationInMs / (1000 * 60)) % 60);
 
-      numMeetings = (Object.keys(userObject).length - 1) / 2;
+      if (hours > 0 && minutes > 0) elapsedTime = `${hours}h ${minutes}m`;
+      else if (hours > 0) elapsedTime = `${hours} hours`;
+      else elapsedTime = `${minutes} minutes`;
 
-      setNumMeetings(numMeetings);
-
-      signInNumber = Object.keys(userObject).length - 1;
-
-      signInNumber = parseInt(signInNumber / 2) + 1;
-
-      setSignInNumber(signInNumber);
+      setElapsedTime(elapsedTime);
     };
 
-    if (name.length > 0) callFB();
-  }, [name, update]);
+    if (buttonMessage.includes("Out")) getLatestSignInTimeFromFB();
+
+    const interval = setInterval(() => {}, 6000);
+    return () => clearInterval(interval);
+  }, [buttonMessage]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      let allUserData = await getAllUsers();
+
+      allUserData.sort((a, b) => b.hours - a.hours);
+
+      rank = allUserData.findIndex((obj) => obj.name === name) + 1;
+      if (rank === 1) rank += " 👑";
+      else if (rank === 2) rank += " 🥈";
+      else if (rank === 3) rank += " 🥉";
+      setRank(rank);
+
+      setTotalUsers(allUserData.length);
+    };
+
+    if (name.length > 0) getUsers();
+  }, [name]);
 
   const signInOut = async (e) => {
     e.preventDefault();
@@ -117,8 +163,10 @@ export default function Home() {
             <h1 className="statistic-value">{numMeetings}</h1>
           </div>
           <div className="statistic">
-            <h1 className="statistic-name">Your Hours Rank (out of 66):</h1>
-            <h1 className="statistic-value">21</h1>
+            <h1 className="statistic-name">
+              Your Hours Rank (out of {totalUsers}):
+            </h1>
+            <h1 className="statistic-value">{rank}</h1>
           </div>
 
           <div
@@ -129,7 +177,7 @@ export default function Home() {
             }}
           >
             <h1 className="statistic-name">Your Current Signed in Time:</h1>
-            <h1 className="statistic-value">55 min</h1>
+            <h1 className="statistic-value">{elapsedTime}</h1>
           </div>
         </div>
 
