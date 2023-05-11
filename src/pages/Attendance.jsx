@@ -17,6 +17,8 @@ export default function Attendance() {
         if (numMeetings % 1 === 0.5) {
           let signInNumber = Object.keys(user).length - 2;
 
+          signInNumber = parseInt(signInNumber / 2) + 1;
+
           const latestSignInTime = await getLatestSignInTime(
             user.name,
             signInNumber
