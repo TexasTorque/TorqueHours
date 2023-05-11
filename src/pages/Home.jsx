@@ -200,11 +200,20 @@ export default function Home() {
         <Button
           onClick={(e) => {
             e.preventDefault();
+            navigate("/attendance");
+          }}
+          style={{ marginLeft: ".5em" }}
+        >
+        Attendance
+        </Button>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
             navigate("/add");
           }}
-          style={{ marginLeft: "1em" }}
+          style={{ marginLeft: ".5em" }}
         >
-          Add User
+          Add Member
         </Button>
       </div>
     </div>

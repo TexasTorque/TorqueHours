@@ -4,6 +4,7 @@ import Home from "./pages/Home.jsx"
 import Leaderboard from "./pages/Leaderboard.jsx"
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import AddUser from "./pages/AddUser.jsx"
+import Attendance from "./pages/Attendance.jsx"
 import 'bootstrap/dist/css/bootstrap.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,6 +14,7 @@ root.render(
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/add" element={<AddUser />} />
+          <Route path = "/attendance" element={<Attendance />} />
       </Routes>
   </Router>
 );
