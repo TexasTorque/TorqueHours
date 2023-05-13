@@ -2,8 +2,12 @@ import Header from "../components/Header";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { createUser } from "../firebase";
+import { Navigate, useNavigate } from "react-router-dom";
+
 export default function AddUser() {
   const [name, setName] = useState("");
+
+  const navigate = useNavigate();
   return (
     <>
       <Header />
@@ -24,6 +28,7 @@ export default function AddUser() {
           onClick={(e) => {
             e.preventDefault();
             createUser(name);
+            navigate("/");
           }}
         >
           Add
