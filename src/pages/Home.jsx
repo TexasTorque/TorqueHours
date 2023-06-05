@@ -128,11 +128,12 @@ export default function Home() {
             {name.slice(0, name.indexOf(" "))}
           </Dropdown.Toggle>
 
-          <Dropdown.Menu>
+          <Dropdown.Menu className="name-dropdown">
             <input
               className="dropdown-search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              id={"dropdown-menu-align-start"}
               autoFocus
             ></input>
             {names
@@ -204,7 +205,7 @@ export default function Home() {
           }}
           style={{ marginLeft: ".5em" }}
         >
-        Attendance
+          Attendance
         </Button>
         <Button
           onClick={(e) => {

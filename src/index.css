@@ -127,3 +127,10 @@ td {
   margin-top: 3em;
   width: 100%;
 }
+
+.name-dropdown{
+  text-align: center;
+  margin-left: -3.5em;
+  max-height: 250px;
+  overflow-y: auto;
+}
