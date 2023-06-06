@@ -17,14 +17,12 @@ export default function HoursReport() {
   }, []);
 
   const getName = (name, index, length) => {
-    console.log(length)
     if (index === 0) return name + " 👑";
     else if (index === 1) return name + " 🥈";
     else if (index === 2) return name + " 🥉";
     else if (index == length - 1) return name + " 😭";
     else return name;
   };
-
 
   return (
     <div>
@@ -39,17 +37,19 @@ export default function HoursReport() {
       >
         <thead>
           <tr style={{ textAlign: "center" }}>
+          <th style={{ width: "3em" }}>Rank</th>
             <th>Name</th>
             <th style={{ width: "3em" }}>Hours</th>
-            <th style={{ width: "3em" }}>Rank</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user, index) => (
             <tr key={index}>
-              <td className="hour-cell">{getName(user.name, index, users.length)}</td>
-              <td className="hour-cell">{user.hours}</td>
               <td className="hour-cell">{index + 1}</td>
+              <td className="hour-cell">
+                {getName(user.name, index, users.length)}
+              </td>
+              <td className="hour-cell">{user.hours}</td>
             </tr>
           ))}
         </tbody>
