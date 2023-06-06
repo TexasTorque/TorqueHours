@@ -95,3 +95,11 @@ export const createUser = async (name) => {
   };
   setDoc(userRef, userJSON);
 };
+
+export const verifyPassword = async (password) => {
+  const passwordSnap = await getDocs(collection(db, "keys"));
+  return (
+    password ===
+    passwordSnap.docs[0]._document.data.value.mapValue.fields.key.stringValue
+  );
+};
