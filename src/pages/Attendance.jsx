@@ -32,14 +32,19 @@ export default function Attendance() {
           const hours = Math.floor(durationInMs / (1000 * 60 * 60));
           const minutes = Math.floor((durationInMs / (1000 * 60)) % 60);
 
+          if (hours > 12) return;
+
           if (hours > 0 && minutes > 0) elapsedTime = `${hours}h ${minutes}m`;
           else if (hours > 0) elapsedTime = `${hours} hours`;
           else elapsedTime = `${minutes} min`;
+
+
 
           signedInUsers.push({
             name: user.name,
             elapsedTime: elapsedTime,
           });
+
           setSignedInUsers(signedInUsers);
         }
       });
