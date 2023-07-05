@@ -2,12 +2,15 @@ import Header from "../components/Header";
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { createUser, verifyPassword } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function AddUser() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [buttonName, setButtonName] = useState("Add");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const statusKeyboardInput = (e) => {
@@ -94,6 +97,17 @@ export default function AddUser() {
         >
           {isActive && <span>&#10003;</span>} {buttonName}
         </Button>
+      </div>
+      <div className="hour-report-button">
+        <Button
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            style={{ marginLeft: ".5em" }}
+          >
+            Home
+          </Button>
       </div>
     </>
   );

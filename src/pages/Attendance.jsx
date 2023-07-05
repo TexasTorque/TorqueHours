@@ -1,9 +1,13 @@
 import Header from "../components/Header.jsx";
 import { useState, useEffect } from "react";
 import { getAllUsers, getLatestSignInTime } from "../firebase";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 export default function Attendance() {
   let [signedInUsers, setSignedInUsers] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAllUsersFromFB = async () => {
@@ -59,7 +63,7 @@ export default function Attendance() {
         bordered
         hover
         className="hours-table"
-        style={{ width: "90%" }}
+        style={{ width: "90%", marginBottom: "32px" }}
       >
         <thead>
           <tr style={{ textAlign: "center" }}>
@@ -76,6 +80,17 @@ export default function Attendance() {
           ))}
         </tbody>
       </Table>
+      <div className="hour-report-button">
+        <Button
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            style={{ marginLeft: ".5em" }}
+          >
+            Home
+          </Button>
+      </div>
     </>
   );
 }
