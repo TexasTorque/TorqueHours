@@ -101,6 +101,14 @@ td {
   bottom: 1em;
 }
 
+.home-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  bottom: 1em;
+}
+
 .hour-cell {
   text-align: center;
 }
