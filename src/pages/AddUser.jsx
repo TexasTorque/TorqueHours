@@ -62,6 +62,7 @@ export default function AddUser() {
 
   return (
     <>
+      <br />
       <Header />
       <h1>
         Note: If you need to be added to Torque Hours, please ask Omar in
