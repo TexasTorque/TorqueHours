@@ -63,11 +63,15 @@ export default function AddUser() {
   return (
     <>
       <Header />
+      <h1>
+        Note: If you need to be added to Torque Hours, please ask Omar in
+        Programming
+      </h1>
       <div className="add-user-verification">
         <h1>Password: </h1>
 
         <input
-          type="text"
+          type="password"
           name="name"
           className="add-user-input-field"
           value={password}
@@ -100,14 +104,14 @@ export default function AddUser() {
       </div>
       <div className="hour-report-button">
         <Button
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/");
-            }}
-            style={{ marginLeft: ".5em" }}
-          >
-            Home
-          </Button>
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+          style={{ marginLeft: ".5em" }}
+        >
+          Home
+        </Button>
       </div>
     </>
   );
