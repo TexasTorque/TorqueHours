@@ -64,7 +64,7 @@ export default function AddUser() {
     <>
       <br />
       <Header />
-      <h1>
+      <h1 style={{ textAlign: "center" }}>
         Note: If you need to be added to Torque Hours, please ask Omar in
         Programming
       </h1>
