@@ -80,7 +80,7 @@ export default function Attendance() {
           ))}
         </tbody>
       </Table>
-      <div className="hour-report-button">
+      <div className="home-button">
         <Button
             onClick={(e) => {
               e.preventDefault();
