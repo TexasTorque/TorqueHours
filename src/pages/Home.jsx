@@ -34,6 +34,8 @@ export default function Home() {
       onSnapshot(doc(db, "hours", name), () => {
         updateFields();
       });
+
+      localStorage.setItem("user", name);
   }, [name]);
 
   useEffect(() => {
@@ -63,6 +65,12 @@ export default function Home() {
 
     setSignInNumber(signInNumber);
   };
+
+  useState(() => {
+    if (localStorage.getItem("user") != null) {
+      setName(localStorage.getItem("user"));
+    }
+  }, [])
 
   useEffect(() => {
     const getLatestSignInTimeFromFB = async () => {
