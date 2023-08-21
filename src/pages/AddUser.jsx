@@ -65,7 +65,7 @@ export default function AddUser() {
       <Header />
       <br />
       <h1 style={{ textAlign: "center" }}>
-        Note: If you need to be added to Torque Hours, please ask Omar in
+        Note: If you need to be added to Torque Hours, please ask Davey in
         Programming
       </h1>
       <div className="add-user-verification">
