@@ -131,7 +131,7 @@ export default function Home() {
       <div className="name-selection">
         <h1 className="name-prompt">Select Your Name:</h1>
 
-        <Dropdown>
+        <Dropdown className="name-selection-button">
           <Dropdown.Toggle variant="primary">
             {name.slice(0, name.indexOf(" "))}
           </Dropdown.Toggle>

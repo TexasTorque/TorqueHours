@@ -77,6 +77,12 @@ td {
   margin-top: 2em;
 }
 
+.name-selection-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .sign-in-out-button-container {
   display: flex;
   justify-content: center;
