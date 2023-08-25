@@ -1,6 +1,7 @@
-import { Button, Dropdown, Form } from "react-bootstrap";
+import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { useState } from "react";
 import { useEffect } from "react";
+import AuthorizeUser from "../components/AuthorizeUser"
 import {
   getAllNames,
   getUserObject,
@@ -8,6 +9,7 @@ import {
   db,
   getLatestSignInTime,
   getAllUsers,
+  verifyPassword,
 } from "../firebase";
 import { onSnapshot, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -160,7 +162,7 @@ export default function Home() {
       </div>
 
       <div style={{ display: `${name.length <= 0 ? "none" : ""}` }}>
-        <h4 className="greeting">Hi {name}!</h4>
+        <h4 className="greeting">Hi {name.substring(0, name.indexOf(" "))}!</h4>
 
         <div className="statistics">
           <div className="statistic">
@@ -218,11 +220,11 @@ export default function Home() {
         <Button
           onClick={(e) => {
             e.preventDefault();
-            navigate("/add");
+            navigate("/admin");
           }}
           style={{ marginLeft: ".5em" }}
         >
-          Add Member
+          Admin
         </Button>
       </div>
     </div>

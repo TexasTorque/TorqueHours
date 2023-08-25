@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import Home from "./pages/Home.jsx"
 import Leaderboard from "./pages/Leaderboard.jsx"
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import AddUser from "./pages/AddUser.jsx"
+import Admin from "./pages/Admin.jsx"
 import Attendance from "./pages/Attendance.jsx"
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -13,7 +13,7 @@ root.render(
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/add" element={<AddUser />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path = "/attendance" element={<Attendance />} />
       </Routes>
   </Router>

@@ -143,6 +143,29 @@ td {
   width: 100%;
 }
 
+.admin-button {
+  background-color: #0D6EFD;
+  border-style: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.admin-button:hover {
+  transition: .25s;
+  background-color: #0B5ED7;
+}
+
+.admin-input {
+  background-color: black;
+  color: white;
+  border-style: none;
+  text-align: center;
+}
+
+.admin-table {
+  border: "3px solid white";
+}
+
 .name-dropdown {
   text-align: center;
   margin-left: -3.5em;
