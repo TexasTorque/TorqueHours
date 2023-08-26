@@ -1,7 +1,6 @@
-import { Button, Dropdown, Form, Modal } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import { useState } from "react";
 import { useEffect } from "react";
-import AuthorizeUser from "../components/AuthorizeUser"
 import {
   getAllNames,
   getUserObject,
@@ -9,7 +8,6 @@ import {
   db,
   getLatestSignInTime,
   getAllUsers,
-  verifyPassword,
 } from "../firebase";
 import { onSnapshot, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -145,6 +143,7 @@ export default function Home() {
               onChange={(e) => setSearchQuery(e.target.value)}
               id={"dropdown-menu-align-start"}
               autoFocus
+              autoComplete="off"
             ></input>
             {names
               .filter((name) =>

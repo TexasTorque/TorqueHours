@@ -42,6 +42,11 @@ td {
   margin-right: 0.5em;
 }
 
+.create-user-button {
+  display: flex;
+  justify-content: center;
+}
+
 .statistic-name {
   font-size: 1em;
 }

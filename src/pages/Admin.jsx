@@ -2,12 +2,13 @@ import Header from "../components/Header";
 import AuthorizeUser from "../components/AuthorizeUser";
 import { Table, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { getAllUsers } from "../firebase";
 import { useNavigate } from "react-router-dom";
-
-function handleUpdate(index, name, hours) {
-  // save to fb database
-}
+import {
+  createUser,
+  updateUser,
+  getAllUsers,
+  deleteUser,
+} from "../firebase";
 
 export default function AddUser() {
   let [enterAdmin, setEnterAdmin] = useState(true);
@@ -16,68 +17,85 @@ export default function AddUser() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let newUsers = [];
-    const res = async () => {
-      await getAllUsers().then(users => {
-        users.forEach(user => {
-          newUsers.push({name: user.name, hours: user.hours});
-        })
-      });
-    }
-    res()
-    setUsers(newUsers);
+    refreshUsers();
   }, []);
 
-  function AdminPanel() {
-    return (
-      <>
-        <Table
-          striped
-          bordered
-          hover
-          className="hours-table"
-          style={{ marginLeft: "auto", marginRight: "auto", width: "70%", marginBottom: "30px"}}
-        >
-          <thead>
-            <tr style={{ textAlign: "center" }}>
-              <th>Name</th>
-              <th style={{ width: "10em"}}>Hours</th>
-              <th style={{ width: "5em"}}>Update</th>
-            </tr>
-          </thead>
-        <tbody>
-            {
-              users.map((user, index) => (
-              <tr key={index}>
-                <td className="hour-cell"><input type="text" className="admin-input" defaultValue={user.name}/></td>
-                <td className="hour-cell"><input type="text" className="admin-input" defaultValue={user.hours}/></td>
-                <td className="hour-cell"><button className="admin-button" onClick={(e) => { handleUpdate(index, e.target.parentNode.parentNode.children[0].children[0].value, e.target.parentNode.parentNode.children[1].children[0].value) }}>✓</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </>
-    )
+  async function refreshUsers() {
+    await getAllUsers().then(setUsers);
   }
+
+  const onUpdateLineitem = async (oldName, e) => {
+    const newName = e.target.parentNode.parentNode.children[0].children[0].value;
+    const hours = e.target.parentNode.parentNode.children[1].children[0].value
+
+    updateUser(oldName, newName, hours); 
+    
+    if (oldName === localStorage.getItem("user")) {
+      localStorage.setItem("user", newName);
+    }
+
+    await refreshUsers();
+
+    e.target.style.backgroundColor = "green";
+    setTimeout(() => {
+      e.target.style.backgroundColor = "#0D6EFD";
+    }, 500);
+
+  };
   
   return (
     <>
       <Header />
-      <AdminPanel />
+      <Table
+        striped
+        bordered
+        hover
+        className="hours-table"
+        style={{ marginLeft: "auto", marginRight: "auto", width: "70%", marginBottom: "30px"}}
+      >
+        <thead>
+          <tr style={{ textAlign: "center" }}>
+            <th>Name</th>
+            <th style={{ width: "10em"}}>Hours</th>
+            <th style={{ width: "5em"}}>Controls</th>
+          </tr>
+        </thead>
+      <tbody>
+          {
+            users.map((user, index) => (
+            <tr key={index}>
+              <td className="hour-cell"><input type="text" className="admin-input" defaultValue={user.name}/></td>
+              <td className="hour-cell"><input type="text" className="admin-input" defaultValue={user.hours}/></td>
+              <td className="hour-cell">
+                <button className="admin-button" onClick={e => onUpdateLineitem(users[index].name, e)}>✓</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
       <AuthorizeUser 
           show={ enterAdmin } 
           setShow={ setEnterAdmin }
         />
       <div className="home-button">
         <Button
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/");
-            }}
-            style={{ marginLeft: ".5em" }}
-          >
-            Home
-          </Button>
+          onClick={(e) => {
+            e.preventDefault();
+            createUser(" New User");
+          }}
+          style={{ marginLeft: ".5em" }}
+        >
+          Add User
+        </Button>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+          style={{ marginLeft: ".5em" }}
+        >
+          Home
+        </Button>
       </div>
     </>
   );

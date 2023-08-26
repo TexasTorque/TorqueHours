@@ -5,6 +5,7 @@ import {
   getDocs,
   doc,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -55,6 +56,37 @@ export const addTimestamp = async (key, value, name, signInNumber) => {
   }
 
   setDoc(userRef, userJSON, { merge: true });
+};
+
+export const deleteUser = async (name) => {
+  await deleteDoc(doc(db, "hours", name));
+}
+
+export const updateUser = async (oldName, newName, hours) => {
+  if (newName === "") {
+    await deleteDoc(doc(db, "hours", oldName));
+    return;
+  }
+
+  let userJSON = {
+    "name": newName,
+    "hours": Number(hours),
+  }
+
+  if (oldName !== newName) {
+    createUser(newName);
+
+    const oldUserObject = await getUserObject(oldName);
+
+    for (const property in oldUserObject) {
+      if (property.includes("sign-")) {
+        userJSON[property] = oldUserObject[property];
+      }
+    }
+
+    await deleteDoc(doc(db, "hours", oldName));
+  }
+  setDoc(doc(db, "hours", newName), userJSON, { merge: true });
 };
 
 export const getRunningHours = async (name, signInNumber) => {
