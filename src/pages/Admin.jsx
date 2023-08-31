@@ -38,7 +38,7 @@ export default function AddUser() {
 
     e.target.style.backgroundColor = "green";
     setTimeout(() => {
-      e.target.style.backgroundColor = "#0D6EFD";
+      e.target.style.backgroundColor = "black";
     }, 500);
 
   };
@@ -57,17 +57,21 @@ export default function AddUser() {
           <tr style={{ textAlign: "center" }}>
             <th>Name</th>
             <th style={{ width: "10em"}}>Hours</th>
-            <th style={{ width: "5em"}}>Controls</th>
           </tr>
         </thead>
       <tbody>
+        <tr>
+          <td className="hour-cell"><input type="text" className="admin-input" placeholder="First Last"/></td>
+          <td className="hour-cell"><input type="text" className="admin-input" placeholder="0"/></td>
+        </tr>
           {
             users.map((user, index) => (
             <tr key={index}>
-              <td className="hour-cell"><input type="text" className="admin-input" defaultValue={user.name}/></td>
-              <td className="hour-cell"><input type="text" className="admin-input" defaultValue={user.hours}/></td>
               <td className="hour-cell">
-                <button className="admin-button" onClick={e => onUpdateLineitem(users[index].name, e)}>✓</button>
+                <input type="text" className="admin-input" defaultValue={user.name} onBlur={(e) => onUpdateLineitem(users[index].name, e)}/>
+              </td>
+              <td className="hour-cell">
+                <input type="text" className="admin-input" defaultValue={user.hours} onBlur={(e) => onUpdateLineitem(users[index].name, e)}/>
               </td>
             </tr>
           ))}
@@ -78,15 +82,6 @@ export default function AddUser() {
           setShow={ setEnterAdmin }
         />
       <div className="home-button">
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            createUser(" New User");
-          }}
-          style={{ marginLeft: ".5em" }}
-        >
-          Add User
-        </Button>
         <Button
           onClick={(e) => {
             e.preventDefault();

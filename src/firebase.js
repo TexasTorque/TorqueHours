@@ -21,10 +21,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
+export const changeToUUID = async () => {
+  let name = "Davey Adams2";
+  const oldUserObject = await getUserObject(name);
+
+  let userJSON = {
+    "name": oldUserObject.name,
+    "hours": Number(oldUserObject.hours),
+  }
+
+  for (const property in oldUserObject) {
+    if (property.includes("sign-")) {
+      userJSON[property] = oldUserObject[property];
+    }
+  }
+
+  const uuid = crypto.randomUUID().replaceAll("-", "");
+  const userRef = doc(db, "hours", uuid);
+  setDoc(userRef, userJSON);
+}
+
 export const getAllNames = async () => {
   const hoursRef = collection(db, "hours");
   const hoursSnap = await getDocs(hoursRef);
-  return hoursSnap.docs.map((doc) => doc.id);
+  return hoursSnap.docs.map((doc) => doc.data().name);
 };
 
 export const getAllUsers = async () => {
@@ -37,13 +57,25 @@ export const getUserObject = async (name) => {
   const userRef = collection(db, "hours");
   const usersSnap = await getDocs(userRef);
   const userObject = usersSnap.docs
-    .filter((doc) => doc.id === name)
+    .filter((doc) => doc.data().name === name)
     .map((doc) => doc.data());
   return userObject[0];
 };
 
-export const addTimestamp = async (key, value, name, signInNumber) => {
-  const userRef = doc(db, "hours", name);
+export const getUUID = async (name) => {
+  const userRef = collection(db, "hours");
+  const usersSnap = await getDocs(userRef);
+  const userObject = usersSnap.docs
+    .filter((doc) => doc.data().name === name)
+    .map((doc) => {
+      return doc.id;
+    });
+  return userObject[0];
+}
+
+export const addTimestamp = async (key, value, name, uuid, signInNumber) => {
+  console.log("Adding timestamp, " + uuid + "," + name + "," + signInNumber);
+  const userRef = doc(db, "hours", uuid);
   let runningHours;
 
   const userJSON = {

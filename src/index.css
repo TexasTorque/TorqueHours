@@ -15,6 +15,10 @@ td {
   color: white !important;
 }
 
+input:placeholder-shown {
+  font-style: italic;
+}
+
 .header {
   display: flex;
   justify-content: center;
@@ -148,23 +152,13 @@ td {
   width: 100%;
 }
 
-.admin-button {
-  background-color: #0D6EFD;
-  border-style: none;
-  border-radius: 5px;
-  color: white;
-}
-
-.admin-button:hover {
-  transition: .25s;
-  background-color: #0B5ED7;
-}
-
 .admin-input {
   background-color: black;
   color: white;
   border-style: none;
   text-align: center;
+  transition: .25s;
+  border-radius: 5px;
 }
 
 .admin-table {

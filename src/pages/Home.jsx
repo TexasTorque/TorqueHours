@@ -8,6 +8,8 @@ import {
   db,
   getLatestSignInTime,
   getAllUsers,
+  changeToUUID,
+  getUUID,
 } from "../firebase";
 import { onSnapshot, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +18,7 @@ import "../index.css";
 
 export default function Home() {
   const [name, setName] = useState("");
+  const [uuid, setUUID] = useState("");
   const [names, setNames] = useState([""]);
   const [searchQuery, setSearchQuery] = useState("");
   const [hours, setHours] = useState(0);
@@ -30,12 +33,18 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (name.length > 0)
-      onSnapshot(doc(db, "hours", name), () => {
-        updateFields();
-      });
-
+    const update = async () => {
       localStorage.setItem("user", name);
+      await getUUID(name).then(val => { setUUID(val) });
+      if (name.length > 0 && uuid) {
+        onSnapshot(doc(db, "hours", uuid), () => {
+          console.log("hot update " + uuid);
+          updateFields();
+        });
+      }
+    }
+
+    update();
   }, [name]);
 
   useEffect(() => {
@@ -120,6 +129,7 @@ export default function Home() {
       (buttonMessage === "Sign In" ? "sign-in-" : "sign-out-") + signInNumber,
       new Date().toISOString(),
       name,
+      uuid,
       signInNumber
     );
   };
@@ -146,12 +156,10 @@ export default function Home() {
               autoComplete="off"
             ></input>
             {names
-              .filter((name) =>
-                name.toLowerCase().includes(searchQuery.toLowerCase())
-              )
+              .filter((name) => name.toLowerCase().includes(searchQuery.toLowerCase()))
               .map((name, index) => {
                 return (
-                  <Dropdown.Item onClick={() => setName(name)} key={index}>
+                  <Dropdown.Item onClick={() => {setName(name); getUUID(name).then(val => { setUUID(val) }); }} key={index}>
                     {name}
                   </Dropdown.Item>
                 );
@@ -224,6 +232,9 @@ export default function Home() {
           style={{ marginLeft: ".5em" }}
         >
           Admin
+        </Button>
+        <Button onClick={changeToUUID}>
+          CHANGE TO UUIDS!
         </Button>
       </div>
     </div>
